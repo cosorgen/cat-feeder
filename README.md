@@ -2,43 +2,6 @@
 
 A fun interactive web game where users can feed a space cat hotdogs! The cat's head and eyes track your cursor, and you can drag and drop hotdogs into the cat's mouth. The game keeps track of a global counter of hotdogs fed across all users and sessions.
 
-**Now built with TypeScript for better type safety and developer experience!**
-
-## Features
-
-- **Cursor Tracking**: The cat's head and eyes follow your mouse cursor
-- **Drag & Drop**: Drag hotdogs from the pile to feed the cat
-- **Global Counter**: Tracks total hotdogs fed across all users (stored in Supabase)
-- **Responsive Design**: Works on desktop and mobile devices
-- **Space Theme**: Beautiful space background with cat graphics
-- **Smooth Animations**: Eating animations and visual feedback
-- **TypeScript**: Full type safety and modern development experience
-
-## Files Structure
-
-```
-cat-feeder/
-├── index.html          # Main HTML file
-├── styles.css          # Game styling
-├── src/                # TypeScript source files
-│   ├── main.ts         # Main game logic
-│   ├── config.ts       # Supabase configuration
-│   └── types.ts        # Type definitions
-├── dist/               # Compiled JavaScript files (generated)
-│   ├── main.js         # Compiled main game logic
-│   ├── config.js       # Compiled configuration
-│   └── types.js        # Compiled type definitions
-├── tsconfig.json       # TypeScript configuration
-├── package.json        # Node.js dependencies and scripts
-├── build.bat/.sh       # Build scripts for Windows/Unix
-├── images/             # Game assets
-│   ├── cat_bg.jpg      # Space background
-│   ├── cat_face_*.png  # Cat faces (up, down, left, right)
-│   ├── cat_eyes_*.png  # Cat eyes (up, down, left, right)
-│   └── glizzy_*.png    # Hotdog images
-└── artwork/            # Source artwork files
-```
-
 ## Setup Instructions
 
 ### 0. Prerequisites
@@ -75,73 +38,40 @@ CREATE POLICY "Allow all operations on hotdog_counter" ON hotdog_counter
 FOR ALL USING (true);
 ```
 
-### 2. Supabase Database Setup
+### 3. Configure Environment Variables
 
-1. Go to [Supabase](https://supabase.com) and create a new project
-2. In the SQL Editor, run the following query to create the hotdog counter table:
-
-```sql
--- Create the hotdog counter table
-CREATE TABLE hotdog_counter (
-    id BIGSERIAL PRIMARY KEY,
-    count BIGINT NOT NULL DEFAULT 0,
-    updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- Insert initial row
-INSERT INTO hotdog_counter (count) VALUES (0);
-
--- Enable Row Level Security (optional but recommended)
-ALTER TABLE hotdog_counter ENABLE ROW LEVEL SECURITY;
-
--- Create a policy to allow all operations
-CREATE POLICY "Allow all operations on hotdog_counter" ON hotdog_counter
-FOR ALL USING (true);
-```
-
-### 3. Configure the Game
-
-1. Open `src/config.ts`
-2. Replace the placeholder values with your Supabase project details:
-   - `YOUR_SUPABASE_URL` → Your Supabase project URL
-   - `YOUR_SUPABASE_ANON_KEY` → Your Supabase anon/public key
-
-You can find these values in your Supabase project settings under "API".
-
-### 4. Build the Project
-
-Build the TypeScript files to JavaScript:
-
-```bash
-# Using npm script
-npm run build
-
-# Or using TypeScript compiler directly
-npx tsc
-
-# Or using the provided build scripts
-# Windows:
-build.bat
-
-# Unix/Linux/macOS:
-./build.sh
-```
-
-### 5. Run the Game
-
-1. Open `index.html` in a web browser
-2. Or serve the files using a local web server:
+1. Copy the example environment file:
 
    ```bash
-   # Using Python 3
-   python -m http.server 8000
-
-   # Using Node.js (if you have http-server installed)
-   npx http-server
-
-   # Using VS Code Live Server extension
-   Right-click index.html → "Open with Live Server"
+   copy .env.example .env
    ```
+
+2. Edit the `.env` file and replace the placeholder values with your actual Supabase project details:
+
+   ```
+   VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key-here
+   ```
+
+   You can find these values in your Supabase project settings under "API".
+
+**Important**: The `.env` file is already included in `.gitignore` to prevent accidentally committing your secrets to version control.
+
+### 4. Build and Run the Project
+
+```bash
+# Install dependencies
+npm install
+
+# Development mode (with hot reload)
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
 
 ## How to Play
 
@@ -153,19 +83,20 @@ build.bat
 
 ## Development
 
-### TypeScript Development
+### Environment Setup
 
+- **Environment Variables**: Configure your Supabase credentials in `.env` file
 - **Source files**: Edit files in the `src/` directory
-- **Build**: Run `npm run build` or `npx tsc` to compile TypeScript to JavaScript
-- **Watch mode**: Run `npm run watch` to automatically recompile on file changes
+- **Development server**: Run `npm run dev` for hot reload during development
+- **Build**: Run `npm run build` to compile TypeScript and bundle for production
 - **Types**: The project includes full TypeScript type definitions for better development experience
 
 ### Development Workflow
 
 1. Make changes to TypeScript files in `src/`
-2. Run `npm run build` to compile to JavaScript
-3. Open `index.html` in your browser to test
-4. Repeat as needed
+2. The development server (`npm run dev`) will automatically reload your changes
+3. For production builds, run `npm run build`
+4. Test the production build with `npm run preview`
 
 ### Type Safety Benefits
 

@@ -12,44 +12,47 @@
   <div class="game-container">
     <!-- Background -->
     <div class="background">
-      <img src="images/cat_bg.jpg" alt="Space Background" class="bg-image">
+      <img src="images/bg.png" alt="Space Background" class="bg-image">
     </div>
 
     <!-- UI Elements -->
     <div class="ui-container">
       <div class="counter-display">
-        <h2>Global Hotdogs Fed: <span id="hotdog-counter">Loading...</span></h2>
+        <h2>Hotdogs nommed: <span id="hotdog-counter"></span></h2>
       </div>
       <div class="instructions">
-        <p>Drag hotdogs to feed the space cat! 🚀🐱🌭</p>
+        <p>Drag hotdogs to feed the cat! 🚀🐱🌭</p>
       </div>
     </div>
 
     <!-- Cat Container -->
-    <div class="cat-container">
-      <!-- Cat Face (will change based on cursor direction) -->
-      <img src="images/cat_face_up.png" alt="Cat Face" class="cat-face" id="cat-face">
+    <div id="cat-container">
+      <img src="images/cat_body.png" alt="Cat Body" id="cat-body" draggable="false">
 
-      <!-- Cat Eyes (will change based on cursor direction) -->
-      <img src="images/cat_eyes_up.png" alt="Cat Eyes" class="cat-eyes" id="cat-eyes">
+      <div id="cat-head">
+        <!-- Cat Eyes (will change based on cursor direction) -->
+        <img src="images/cat_eyes_left.png" alt="Cat Eyes" id="cat-eyes" draggable="false">
 
-      <!-- Cat Mouth Area (drop zone) -->
-      <div class="cat-mouth" id="cat-mouth"></div>
+        <!-- Cat Face (will change based on cursor direction) -->
+        <img src="images/cat_face_left.png" alt="Cat Face" id="cat-face" draggable="false">
+
+        <!-- Cat Mouth Area (drop zone) -->
+        <div id="cat-mouth"></div>
+      </div>
     </div>
 
     <!-- Hotdog Pile -->
-    <div class="hotdog-pile" id="hotdog-pile">
+    <div id="hotdog-pile">
       <!-- Hotdogs will be dynamically added here -->
     </div>
 
     <!-- Drop feedback -->
-    <div class="drop-feedback" id="drop-feedback"></div>
+    <div id="drop-feedback"></div>
   </div>
 
   <!-- Supabase Configuration -->
   <script src="https://unpkg.com/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
-  <script type="module" src="dist/config.js"></script>
-  <script type="module" src="dist/main.js"></script>
+  <script type="module" src="/src/main.ts"></script>
 </body>
 
 </html>

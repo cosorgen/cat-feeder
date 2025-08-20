@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', (): void => {
   initializeSupabase();
   initializeGame();
   setupEventListeners();
-  createCustomCursor();
   createHotdogPile();
   loadHotdogCounter();
 });
@@ -51,7 +50,6 @@ function initializeSupabase(): void {
         SUPABASE_CONFIG.url,
         SUPABASE_CONFIG.key
       );
-      console.log('Supabase initialized successfully');
     } else {
       console.warn('Supabase configuration not set. Using local counter.');
       // Use localStorage as fallback
@@ -72,15 +70,25 @@ function initializeSupabase(): void {
 
 // Initialize game elements
 function initializeGame(): void {
+  updateCatDirection('left');
+  layoutCat();
+}
+
+function layoutCat() {
+  const catContainer = document.getElementById('cat-container') as HTMLElement;
+  const catBody = document.getElementById('cat-body') as HTMLImageElement;
+  const catHead = document.getElementById('cat-head') as HTMLDivElement;
   const catFace = document.getElementById('cat-face') as HTMLImageElement;
   const catEyes = document.getElementById('cat-eyes') as HTMLImageElement;
 
-  if (!catFace || !catEyes) {
+  if (!catFace || !catEyes || !catHead || !catBody) {
     throw new Error('Required cat elements not found in DOM');
   }
 
-  // Set initial cat direction
-  updateCatDirection('up');
+  // Position cat parts
+  catHead.style.bottom = `${catBody.getBoundingClientRect().height * 0.7}px`;
+
+  catContainer.style.opacity = '1';
 }
 
 // Setup event listeners
@@ -102,20 +110,10 @@ function setupEventListeners(): void {
   document.addEventListener('touchend', handleTouchEnd);
 
   // Prevent context menu on right click
-  document.addEventListener('contextmenu', (e: Event): void =>
-    e.preventDefault()
-  );
-}
+  document.addEventListener('contextmenu', (e: Event) => e.preventDefault());
 
-// Create custom cursor
-function createCustomCursor(): void {
-  const cursor = document.createElement('div');
-  cursor.className = 'custom-cursor';
-  document.body.appendChild(cursor);
-
-  document.addEventListener('mousemove', (e: MouseEvent): void => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
+  window.addEventListener('resize', () => {
+    layoutCat();
   });
 }
 
@@ -123,13 +121,6 @@ function createCustomCursor(): void {
 function handleMouseMove(e: MouseEvent): void {
   if (!gameState.isDragging) {
     updateCatDirection(getCursorDirection(e.clientX, e.clientY));
-  }
-
-  // Update custom cursor position
-  const cursor = document.querySelector('.custom-cursor') as HTMLElement;
-  if (cursor) {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
   }
 }
 
@@ -145,9 +136,9 @@ function handleTouchMove(e: TouchEvent): void {
 
 // Calculate cursor direction relative to cat
 function getCursorDirection(x: number, y: number): CatDirection {
-  const catContainer = document.querySelector('.cat-container') as HTMLElement;
+  const catContainer = document.getElementById('cat-container') as HTMLElement;
   if (!catContainer) {
-    return 'up'; // fallback
+    return 'left'; // fallback
   }
 
   const catRect = catContainer.getBoundingClientRect();
@@ -342,10 +333,10 @@ function checkDropZone(
 
   // Expand the drop zone slightly for better UX
   const expandedZone: DropZone = {
-    left: mouthRect.left - 30,
-    right: mouthRect.right + 30,
-    top: mouthRect.top - 30,
-    bottom: mouthRect.bottom + 30,
+    left: mouthRect.left - 100,
+    right: mouthRect.right + 100,
+    top: mouthRect.top - 100,
+    bottom: mouthRect.bottom + 100,
   };
 
   const isInZone =

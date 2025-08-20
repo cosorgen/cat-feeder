@@ -1,11 +1,11 @@
 import type { SupabaseConfig } from './types.js';
 
-// Supabase Configuration
-// Replace these with your actual Supabase project details
+// Supabase Configuration using environment variables
+// The environment variables should be set in .env file
 
 export const SUPABASE_CONFIG: SupabaseConfig = {
-  url: 'YOUR_SUPABASE_URL', // Replace with your Supabase project URL
-  key: 'YOUR_SUPABASE_ANON_KEY', // Replace with your Supabase anon key
+  url: import.meta.env.VITE_SUPABASE_URL || 'YOUR_SUPABASE_URL',
+  key: import.meta.env.VITE_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY',
 };
 
 // Make config globally available
