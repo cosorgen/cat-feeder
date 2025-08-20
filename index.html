@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat Feeder - Feed the Space Cat!</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="game-container">
+    <!-- Background -->
+    <div class="background">
+      <img src="images/cat_bg.jpg" alt="Space Background" class="bg-image">
+    </div>
+
+    <!-- UI Elements -->
+    <div class="ui-container">
+      <div class="counter-display">
+        <h2>Global Hotdogs Fed: <span id="hotdog-counter">Loading...</span></h2>
+      </div>
+      <div class="instructions">
+        <p>Drag hotdogs to feed the space cat! 🚀🐱🌭</p>
+      </div>
+    </div>
+
+    <!-- Cat Container -->
+    <div class="cat-container">
+      <!-- Cat Face (will change based on cursor direction) -->
+      <img src="images/cat_face_up.png" alt="Cat Face" class="cat-face" id="cat-face">
+
+      <!-- Cat Eyes (will change based on cursor direction) -->
+      <img src="images/cat_eyes_up.png" alt="Cat Eyes" class="cat-eyes" id="cat-eyes">
+
+      <!-- Cat Mouth Area (drop zone) -->
+      <div class="cat-mouth" id="cat-mouth"></div>
+    </div>
+
+    <!-- Hotdog Pile -->
+    <div class="hotdog-pile" id="hotdog-pile">
+      <!-- Hotdogs will be dynamically added here -->
+    </div>
+
+    <!-- Drop feedback -->
+    <div class="drop-feedback" id="drop-feedback"></div>
+  </div>
+
+  <!-- Supabase Configuration -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
+  <script type="module" src="dist/config.js"></script>
+  <script type="module" src="dist/main.js"></script>
+</body>
+
+</html>

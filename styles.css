@@ -1,0 +1,270 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
+  cursor: none;
+  /* Hide default cursor for immersive experience */
+  user-select: none;
+}
+
+.game-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Background */
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* UI Elements */
+.ui-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.counter-display h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 2px solid #fff;
+}
+
+.instructions p {
+  font-size: 1.2rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+/* Cat Container */
+.cat-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  z-index: 50;
+  width: 400px;
+  height: 400px;
+}
+
+.cat-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease;
+  z-index: 51;
+}
+
+.cat-eyes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease;
+  z-index: 52;
+}
+
+.cat-mouth {
+  position: absolute;
+  bottom: 30%;
+  left: 45%;
+  width: 60px;
+  height: 40px;
+  z-index: 53;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.cat-mouth.drop-zone-active {
+  background-color: rgba(255, 255, 0, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
+}
+
+/* Hotdog Pile */
+.hotdog-pile {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.hotdog {
+  width: 80px;
+  height: 80px;
+  cursor: grab;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.hotdog:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.7)) brightness(1.1);
+}
+
+.hotdog.dragging {
+  cursor: grabbing;
+  transform: scale(1.2);
+  z-index: 1000;
+  pointer-events: none;
+  filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.8)) brightness(1.2);
+}
+
+.hotdog.eaten {
+  animation: eatAnimation 0.5s ease-out forwards;
+}
+
+@keyframes eatAnimation {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(0.5) rotate(180deg);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Drop Feedback */
+.drop-feedback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 200;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffff00;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.drop-feedback.show {
+  opacity: 1;
+  animation: feedbackPulse 0.6s ease-out;
+}
+
+@keyframes feedbackPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #fff 40%, transparent 40%);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  mix-blend-mode: difference;
+  transition: transform 0.1s ease;
+}
+
+/* Loading State */
+.loading {
+  color: #ccc;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .cat-container {
+    width: 300px;
+    height: 300px;
+  }
+
+  .counter-display h2 {
+    font-size: 1.5rem;
+  }
+
+  .instructions p {
+    font-size: 1rem;
+  }
+
+  .hotdog {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cat-container {
+    width: 250px;
+    height: 250px;
+  }
+
+  .counter-display h2 {
+    font-size: 1.2rem;
+  }
+
+  .hotdog-pile {
+    bottom: 20px;
+  }
+
+  .hotdog {
+    width: 50px;
+    height: 50px;
+  }
+}
