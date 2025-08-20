@@ -70,7 +70,7 @@ function initializeSupabase(): void {
 
 // Initialize game elements
 function initializeGame(): void {
-  updateCatDirection('left');
+  updateCatDirection('up');
   layoutCat();
 }
 
@@ -86,8 +86,9 @@ function layoutCat() {
   }
 
   // Position cat parts
-  catHead.style.bottom = `${catBody.getBoundingClientRect().height * 0.7}px`;
+  catHead.style.bottom = `${catBody.getBoundingClientRect().height * 0.57}px`;
 
+  // Show cat
   catContainer.style.opacity = '1';
 }
 
@@ -161,16 +162,19 @@ function updateCatDirection(direction: CatDirection): void {
   if (direction === gameState.catDirection) return;
 
   gameState.catDirection = direction;
+  const catHead = document.getElementById('cat-head') as HTMLDivElement;
   const catFace = document.getElementById('cat-face') as HTMLImageElement;
   const catEyes = document.getElementById('cat-eyes') as HTMLImageElement;
 
-  if (!catFace || !catEyes) {
-    console.error('Cat face or eyes element not found');
+  if (!catFace || !catEyes || !catHead) {
+    console.error('Cat face, eyes, or head element not found');
     return;
   }
 
   const directionData = directions[direction];
   if (directionData) {
+    catHead.classList.remove(...Object.keys(directions).map((dir) => dir));
+    catHead.classList.add(direction);
     catFace.src = `images/${directionData.face}`;
     catEyes.src = `images/${directionData.eyes}`;
   }
