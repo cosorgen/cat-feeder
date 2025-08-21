@@ -159,11 +159,11 @@ export class FatCat extends FASTElement {
     const catHeadCenterY =
       this._catHead.getBoundingClientRect().top +
       this._catHead.getBoundingClientRect().height / 2;
-    const xPercentage = (x - catHeadCenterX) / (window.innerWidth * 2);
-    const yPercentage = (y - catHeadCenterY) / (window.innerHeight * 2);
+    const xPercentage = (x - catHeadCenterX) / window.innerWidth;
+    const yPercentage = (y - catHeadCenterY) / window.innerHeight;
 
-    this._catEyes.style.transform = `translate(${25 * xPercentage}px, ${
-      25 * yPercentage
+    this._catEyes.style.transform = `translate(${12 * xPercentage}px, ${
+      12 * yPercentage
     }px)`;
   }
 
