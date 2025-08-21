@@ -1,3 +1,4 @@
+import { css, customElement, FASTElement, html } from '@microsoft/fast-element';
 import { SUPABASE_CONFIG } from './config.js';
 import type {
   GameState,
@@ -552,3 +553,200 @@ document.addEventListener('visibilitychange', (): void => {
     cleanupDrag();
   }
 });
+
+import './glizzy-counter.js';
+
+const template = html`
+  <img src="./img/bg.png" alt="Space Background" id="bg" />
+  <glizzy-counter></glizzy-counter>
+
+  <!-- Cat Container -->
+  <div id="cat-container">
+    <img
+      src="images/cat_body.png"
+      alt="Cat Body"
+      id="cat-body"
+      draggable="false"
+    />
+
+    <div id="cat-head">
+      <!-- Cat Eyes (will change based on cursor direction) -->
+      <img
+        src="images/cat_eyes_left.png"
+        alt="Cat Eyes"
+        id="cat-eyes"
+        draggable="false"
+      />
+
+      <!-- Cat Face (will change based on cursor direction) -->
+      <img
+        src="images/cat_face_left.png"
+        alt="Cat Face"
+        id="cat-face"
+        draggable="false"
+      />
+
+      <!-- Cat Mouth Area (drop zone) -->
+      <div id="cat-mouth"></div>
+    </div>
+  </div>
+
+  <!-- Hotdog Pile -->
+  <div id="hotdog-pile">
+    <!-- Hotdogs will be dynamically added here -->
+  </div>
+
+  <!-- Drop feedback -->
+  <div id="drop-feedback"></div>
+</div>`;
+
+const styles = css`
+  :host {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  #bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Cat Container */
+  #cat-container {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+
+    transition: opacity 0.5s;
+  }
+
+  #cat-body {
+    position: absolute;
+    bottom: -5vh;
+    width: 100%;
+  }
+
+  #cat-head {
+    position: absolute;
+    width: 60%;
+    left: 25%;
+  }
+
+  #cat-face {
+    position: relative;
+    width: 100%;
+  }
+
+  #cat-eyes {
+    position: absolute;
+    width: 60%;
+    left: 0%;
+    top: 31%;
+  }
+
+  #cat-mouth {
+    position: absolute;
+    top: 65%;
+    left: 20%;
+    width: 120px;
+    height: 80px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+
+  #cat-mouth.drop-zone-active {
+    background-color: rgba(255, 255, 0, 0.1);
+    box-shadow: 0 0 120px rgba(255, 255, 0, 0.6);
+  }
+
+  /* Hotdog Pile */
+  #hotdog-pile {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+  }
+
+  .hotdog {
+    cursor: grab;
+    width: 240px;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+
+  .hotdog.dragging {
+    cursor: grabbing;
+    transform: scale(1.2);
+    pointer-events: none;
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.8));
+  }
+
+  .hotdog.eaten {
+    animation: eatAnimation 0.5s ease-out forwards;
+  }
+
+  @keyframes eatAnimation {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    50% {
+      transform: scale(0.5) rotate(180deg);
+      opacity: 0.8;
+    }
+
+    100% {
+      transform: scale(0) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Drop Feedback */
+  #drop-feedback {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 200;
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ffff00;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  #drop-feedback.show {
+    opacity: 1;
+    animation: feedbackPulse 0.6s ease-out;
+  }
+
+  @keyframes feedbackPulse {
+    0% {
+      transform: translate(-50%, -50%) scale(0.5);
+    }
+
+    50% {
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+`;
+
+@customElement({ name: 'cat-glizzier', template, styles })
+export class CatGlizzier extends FASTElement {
+  // Component logic goes here
+}
