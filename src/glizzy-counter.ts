@@ -1,13 +1,9 @@
-import {
-  customElement,
-  html,
-  css,
-  FASTElement,
-  observable,
-} from '@microsoft/fast-element';
+import { customElement, html, css, FASTElement } from '@microsoft/fast-element';
+import { inject } from '@microsoft/fast-element/di.js';
+import GlizzyState from './state.js';
 
 const template = html` <div id="counter-display">
-    <h2>Glizzies gluzzled: ${(x) => x.glizziesGluzzled}</h2>
+    <h2>Glizzies gluzzled: ${(x) => x.gs.glizziesGluzzled}</h2>
   </div>
   <div id="instructions">
     <p>Drag glizzies to feed the cat! 🚀🐱🌭</p>
@@ -43,5 +39,5 @@ const styles = css`
 
 @customElement({ name: 'glizzy-counter', template, styles })
 export class GlizzyCounter extends FASTElement {
-  @observable glizziesGluzzled = 0;
+  @inject(GlizzyState) gs!: GlizzyState;
 }

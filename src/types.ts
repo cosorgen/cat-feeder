@@ -1,10 +1,5 @@
 // Type definitions for the cat feeder game
 
-export interface SupabaseConfig {
-  url: string;
-  key: string;
-}
-
 export interface DirectionMapping {
   face: string;
   eyes: string;
@@ -44,16 +39,4 @@ export interface DropZone {
   right: number;
   top: number;
   bottom: number;
-}
-
-// Extend the Window interface to include Supabase
-declare global {
-  interface Window {
-    supabase: {
-      createClient: (url: string, key: string) => any;
-    };
-  }
-
-  // Global configuration
-  const SUPABASE_CONFIG: SupabaseConfig;
 }
