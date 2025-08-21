@@ -15,6 +15,7 @@ const template = html` <div id="counter-display">
 
 const styles = css`
   :host {
+    display: block;
     position: absolute;
     top: 20px;
     left: 20px;
