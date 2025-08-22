@@ -6,7 +6,6 @@ import {
   observable,
   attr,
 } from '@microsoft/fast-element';
-import type { CatDirection } from './types.js';
 import { inject } from '@microsoft/fast-element/di.js';
 import GlizzyState from './state.js';
 
@@ -55,7 +54,7 @@ const styles = css`
     position: absolute;
     width: 64.7%; /* Calculated from Figma */
     left: 23.9%;
-    bottom: 65.4%;
+    bottom: 65%;
   }
 
   #cat-face {
@@ -68,8 +67,12 @@ const styles = css`
     width: 100%;
     left: 0%;
     top: 0%;
+
+    transition: transform 100ms ease;
   }
 `;
+
+type CatDirection = 'left' | 'right' | 'up' | 'down' | 'open';
 
 @customElement({ name: 'fat-cat', template, styles })
 export class FatCat extends FASTElement {
@@ -168,6 +171,10 @@ export class FatCat extends FASTElement {
       return 'left';
     }
 
+    if (this.isOverHead && this.gs.isDragging) {
+      return 'open';
+    }
+
     const catRect = this._catHead.getBoundingClientRect();
     const catCenterX = catRect.left + catRect.width / 2;
     const catCenterY = catRect.top + catRect.height / 2;
@@ -195,11 +202,12 @@ export class FatCat extends FASTElement {
     }
 
     const catRect = this._catHead.getBoundingClientRect();
+    const inset = 100;
 
     this.isOverHead =
-      x >= catRect.left &&
-      x <= catRect.left + catRect.width &&
-      y >= catRect.top &&
-      y <= catRect.top + catRect.height;
+      x >= catRect.left + inset &&
+      x <= catRect.left + catRect.width - inset &&
+      y >= catRect.top + inset &&
+      y <= catRect.top + catRect.height - inset;
   }
 }

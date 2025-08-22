@@ -1,18 +1,26 @@
-import { css, customElement, FASTElement, html } from '@microsoft/fast-element';
-
+import {
+  css,
+  customElement,
+  FASTElement,
+  html,
+  repeat,
+} from '@microsoft/fast-element';
+import { inject } from '@microsoft/fast-element/di.js';
+import GlizzyState from './state.js';
 import './glizzy-counter.js';
 import './fat-cat.js';
 import './glizzy-pile.js';
 import './drop-feedback.js';
-import { inject } from '@microsoft/fast-element/di.js';
-import GlizzyState from './state.js';
+import './audio-player.js';
 
 const template = html`
   <img src="./img/bg.png" alt="Space Background" id="bg" draggable="false" />
+  ${repeat(() => Array.from({ length: 50 }), html`<div class="star"></div>`)}
   <glizzy-counter></glizzy-counter>
   <fat-cat></fat-cat>
   <glizzy-pile></glizzy-pile>
   <drop-feedback></drop-feedback>
+  <audio-player></audio-player>
 </div>`;
 
 const styles = css`
@@ -33,6 +41,30 @@ const styles = css`
     height: 100%;
     object-fit: cover;
   }
+
+  .star {
+    position: absolute;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 50%;
+    filter: blur(2px) drop-shadow(0 0 6px white);
+    mix-blend-mode: screen;
+    animation: twinkle 1.5s linear infinite;
+  }
+
+  @keyframes twinkle {
+    0% {
+      transform: scale(.8) translateY(-10px);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.2) translateY(10px);
+      opacity: 0;
+    }
+  }
 `;
 
 @customElement({ name: 'cat-glizzier', template, styles })
@@ -42,5 +74,22 @@ export class CatGlizzier extends FASTElement {
   connectedCallback(): void {
     super.connectedCallback();
     document.addEventListener('contextmenu', (e: Event) => e.preventDefault());
+
+    this.shadowRoot?.querySelectorAll('.star').forEach((star) => {
+      (star as HTMLDivElement).style.left = `${Math.random() * 100}vw`;
+      (star as HTMLDivElement).style.top = `${Math.random() * 100}vh`;
+      (star as HTMLDivElement).style.width = `${Math.random() * 5 + 2}px`;
+      (star as HTMLDivElement).style.height = (
+        star as HTMLDivElement
+      ).style.width;
+      (star as HTMLDivElement).style.animationDuration = `${
+        Math.random() + 1
+      }s`;
+      (star as HTMLDivElement).style.background = `rgb(${Math.floor(
+        Math.random() * 256
+      )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
+        Math.random() * 256
+      )})`;
+    });
   }
 }

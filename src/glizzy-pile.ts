@@ -41,7 +41,7 @@ export class GlizzyPile extends FASTElement {
       const gliz = new RandomGlizzy();
       const width = Math.max(Math.random() * 256, 152);
       gliz.style.width = `${width}px`;
-      gliz.style.rotate = `${Math.random() * 45}deg`;
+      gliz.style.rotate = `${Math.random() * 56}deg`;
 
       const x = `calc(${Math.random() * 100}% - ${width}px)`;
       const y = `${Math.random() * this.getBoundingClientRect().height}px`;
