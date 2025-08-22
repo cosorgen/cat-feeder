@@ -36,10 +36,19 @@ const styles = css`
     position: absolute;
     bottom: -5vh;
     right: 0;
-    width: 50%;
+    width: 100%;
     max-width: 640px;
     min-width: 384px;
     transition: filter 0.2s;
+  }
+
+  @media only screen and (max-width: 480px) {
+    :host {
+      bottom: 0;
+      right: -10vw;
+      width: 120%;
+      max-width: unset;
+    }
   }
 
   :host([is-over-head]) {
@@ -120,21 +129,37 @@ export class FatCat extends FASTElement {
 
   addEventListeners() {
     document.addEventListener('mousemove', this.handleMouseMove);
+    document.addEventListener('touchmove', this.handleMouseMove);
     document.addEventListener('mouseup', this.handleMouseUp);
+    document.addEventListener('touchend', this.handleMouseUp);
   }
 
   removeEventListeners() {
     document.removeEventListener('mousemove', this.handleMouseMove);
+    document.removeEventListener('touchmove', this.handleMouseMove);
     document.removeEventListener('mouseup', this.handleMouseUp);
+    document.removeEventListener('touchend', this.handleMouseUp);
   }
 
-  handleMouseMove = (e: MouseEvent): void => {
-    this.updateIsOverHead(e.clientX, e.clientY);
-    this.updateCatDirection(this.getCursorDirection(e.clientX, e.clientY));
-    this.updateEyesDirection(e.clientX, e.clientY);
+  handleMouseMove = (e: MouseEvent | TouchEvent): void => {
+    let clientX: number;
+    let clientY: number;
+
+    if (e instanceof TouchEvent) {
+      e.preventDefault();
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    this.updateIsOverHead(clientX, clientY);
+    this.updateCatDirection(this.getCursorDirection(clientX, clientY));
+    this.updateEyesDirection(clientX, clientY);
   };
 
-  handleMouseUp = (e: MouseEvent): void => {
+  handleMouseUp = (): void => {
     if (this.isOverHead) {
       this.gs.incrementGlizzyCount();
     }

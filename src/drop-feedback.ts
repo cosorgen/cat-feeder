@@ -28,6 +28,7 @@ const styles = css`
     transition: opacity 0.3s linear;
     overflow: hidden;
     text-align: center;
+    margin: 20px;
   }
 
   :host([show]) {

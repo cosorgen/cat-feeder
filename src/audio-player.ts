@@ -42,6 +42,7 @@ const styles = css`
   button {
     line-height: 0;
     position: absolute;
+    z-index: 1000;
     background: rgba(0, 0, 0, 0.5);
     padding: 8px;
     border-radius: 10px;
@@ -53,6 +54,13 @@ const styles = css`
 
     &:hover {
       box-shadow: 0 0 16px rgba(255, 255, 0, 1);
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    button {
+      top: auto;
+      bottom: 20px;
     }
   }
 
