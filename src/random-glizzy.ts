@@ -19,7 +19,6 @@ const styles = css`
   :host {
     display: block;
     position: absolute;
-    cursor: grab;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
     transition: transform 0.2s ease, filter 0.2s ease;
   }
@@ -63,6 +62,7 @@ export class RandomGlizzy extends FASTElement {
   @attr({ mode: 'boolean' }) dragging: boolean = false;
   @attr({ mode: 'boolean' }) eaten: boolean = false;
   @inject(GlizzyState) gs!: GlizzyState;
+  _glizziesGuzzled: number = 0;
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -84,6 +84,61 @@ export class RandomGlizzy extends FASTElement {
 
   handleMouseDown = (e: MouseEvent): void => {
     e.preventDefault();
-    this.gs.glizzyStartDrag(this, e.clientX, e.clientY);
+    if (this.gs.isDragging) return;
+
+    this.dragging = true;
+    this.gs.isDragging = true;
+    this._glizziesGuzzled = this.gs.glizziesGuzzled; // track to know if success
+
+    // Store offset for smooth dragging
+    const rect = this.getBoundingClientRect();
+    this.dataset.offsetX = (rect.width / 2).toString();
+    this.dataset.offsetY = (rect.height / 2).toString();
+    this.dataset.position = this.style.position;
+    this.dataset.left = this.style.left;
+    this.dataset.top = this.style.top;
+    this.dataset.zIndex = this.style.zIndex;
+    this.dataset.translate = this.style.translate;
+
+    // add listener for drag & drop
+    document.addEventListener('mousemove', this.handleDrag);
+    document.addEventListener('mouseup', this.handleMouseUp);
+  };
+
+  // Mouse move handler for dragging
+  handleDrag = (e: MouseEvent): void => {
+    if (this.dragging) {
+      const offsetX = parseInt(this.dataset.offsetX || '0');
+      const offsetY = parseInt(this.dataset.offsetY || '0');
+
+      this.style.position = 'fixed';
+      this.style.left = e.clientX - offsetX + 'px';
+      this.style.top = e.clientY - offsetY + 'px';
+      this.style.zIndex = '1000';
+      this.style.translate = '0 0';
+    }
+  };
+
+  handleMouseUp = (e: MouseEvent): void => {
+    if (this.dragging) {
+      const dropSuccess = this.gs.glizziesGuzzled > this._glizziesGuzzled;
+
+      if (dropSuccess) {
+        this.eaten = true;
+      } else {
+        // Reset hotdog
+        this.style.position = this.dataset.position || 'absolute';
+        this.style.left = this.dataset.left || 'auto';
+        this.style.top = this.dataset.top || 'auto';
+        this.style.zIndex = this.dataset.zIndex || '1';
+        this.style.translate = this.dataset.translate || 'none';
+      }
+
+      // Clean up
+      this.gs.isDragging = false;
+      this.dragging = false;
+      document.removeEventListener('mousemove', this.handleDrag);
+      document.removeEventListener('mouseup', this.handleMouseUp);
+    }
   };
 }

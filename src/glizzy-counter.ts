@@ -1,12 +1,18 @@
-import { customElement, html, css, FASTElement } from '@microsoft/fast-element';
+import {
+  customElement,
+  html,
+  css,
+  FASTElement,
+  volatile,
+} from '@microsoft/fast-element';
 import { inject } from '@microsoft/fast-element/di.js';
 import GlizzyState from './state.js';
 
 const template = html` <div id="counter-display">
-    <h2>Glizzies guzzled: ${(x) => x.gs.glizziesGuzzled}</h2>
+    <h2>Glizzies guzzled: ${(x) => x.formattedNumber}</h2>
   </div>
   <div id="instructions">
-    <p>Drag glizzies to feed the cat! 🚀🐱🌭</p>
+    <p>Drag hotdogs to feed the cat! 🚀🐱🌭</p>
   </div>`;
 
 const styles = css`
@@ -40,4 +46,19 @@ const styles = css`
 @customElement({ name: 'glizzy-counter', template, styles })
 export class GlizzyCounter extends FASTElement {
   @inject(GlizzyState) gs!: GlizzyState;
+
+  @volatile
+  get formattedNumber() {
+    if (this.gs.glizziesGuzzled > 1000 && this.gs.glizziesGuzzled < 1000000) {
+      return `${new Intl.NumberFormat().format(
+        this.gs.glizziesGuzzled / 1000
+      )}K`;
+    }
+    if (this.gs.glizziesGuzzled > 1000000) {
+      return `${new Intl.NumberFormat().format(
+        this.gs.glizziesGuzzled / 1000000
+      )}M`;
+    }
+    return new Intl.NumberFormat().format(this.gs.glizziesGuzzled);
+  }
 }

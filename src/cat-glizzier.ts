@@ -8,11 +8,11 @@ import { inject } from '@microsoft/fast-element/di.js';
 import GlizzyState from './state.js';
 
 const template = html`
-  <img src="./img/bg.png" alt="Space Background" id="bg" />
+  <img src="./img/bg.png" alt="Space Background" id="bg" draggable="false" />
   <glizzy-counter></glizzy-counter>
   <fat-cat></fat-cat>
   <glizzy-pile></glizzy-pile>
-  <drop-feedback ?show="${(x) => x.gs.showFeedback}"></drop-feedback>
+  <drop-feedback></drop-feedback>
 </div>`;
 
 const styles = css`
@@ -22,6 +22,7 @@ const styles = css`
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    cursor: ${(x) => (x.gs.isDragging ? 'grabbing' : 'grab')} !important;
   }
 
   #bg {
@@ -37,4 +38,9 @@ const styles = css`
 @customElement({ name: 'cat-glizzier', template, styles })
 export class CatGlizzier extends FASTElement {
   @inject(GlizzyState) gs!: GlizzyState;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    document.addEventListener('contextmenu', (e: Event) => e.preventDefault());
+  }
 }

@@ -4,13 +4,16 @@ import {
   css,
   FASTElement,
   attr,
+  Observable,
 } from '@microsoft/fast-element';
+import { inject } from '@microsoft/fast-element/di.js';
+import GlizzyState from './state.js';
 
 const template = html`Nom nom! 🐱`;
 
 const styles = css`
   :host {
-    display: block;
+    display: none;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -22,7 +25,7 @@ const styles = css`
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s linear;
   }
 
   :host([show]) {
@@ -48,4 +51,25 @@ const styles = css`
 @customElement({ name: 'drop-feedback', template, styles })
 export class DropFeedback extends FASTElement {
   @attr({ mode: 'boolean' }) show = false;
+  @inject(GlizzyState) gs!: GlizzyState;
+
+  connectedCallback() {
+    super.connectedCallback();
+    Observable.getNotifier(this.gs).subscribe(this, 'glizziesGuzzled');
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    Observable.getNotifier(this.gs).unsubscribe(this);
+  }
+
+  handleChange(subject: any, attr: any) {
+    if (attr === 'glizziesGuzzled' && this.gs.loading === false) {
+      this.show = true;
+      this.style.display = 'block';
+      setTimeout(() => {
+        this.show = false;
+      }, 1000);
+    }
+  }
 }
