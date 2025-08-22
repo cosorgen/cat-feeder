@@ -3,7 +3,6 @@ import {
   html,
   customElement,
   FASTElement,
-  observable,
   Observable,
 } from '@microsoft/fast-element';
 import { inject } from '@microsoft/fast-element/di.js';
