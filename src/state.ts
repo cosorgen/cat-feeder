@@ -23,6 +23,21 @@ export default class GlizzyState {
         import.meta.env.VITE_SUPABASE_URL,
         import.meta.env.VITE_SUPABASE_ANON_KEY
       );
+
+      this.supabase
+        .channel('hotdog_counter')
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'hotdog_counter',
+          },
+          (payload) => {
+            this.globalGlizziesGuzzled = payload.new.count;
+          }
+        )
+        .subscribe();
     } else {
       console.warn('Supabase configuration not set. Using local counter.');
     }
@@ -63,7 +78,10 @@ export default class GlizzyState {
       if (error) {
         console.error('Error updating counter:', error);
         // Save to localStorage as backup
-        localStorage.setItem('hotdogCount', this.globalGlizziesGuzzled.toString());
+        localStorage.setItem(
+          'hotdogCount',
+          this.globalGlizziesGuzzled.toString()
+        );
       }
     }
   }
