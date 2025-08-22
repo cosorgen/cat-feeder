@@ -12,6 +12,7 @@ import './fat-cat.js';
 import './glizzy-pile.js';
 import './drop-feedback.js';
 import './audio-player.js';
+import './owner-donate.js';
 
 const template = html`
   <img src="./img/bg.png" alt="Space Background" id="bg" draggable="false" />
@@ -21,6 +22,7 @@ const template = html`
   <glizzy-pile></glizzy-pile>
   <drop-feedback></drop-feedback>
   <audio-player></audio-player>
+  <owner-donate></owner-donate>
 </div>`;
 
 const styles = css`
