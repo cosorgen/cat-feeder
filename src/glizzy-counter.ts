@@ -49,16 +49,19 @@ export class GlizzyCounter extends FASTElement {
 
   @volatile
   get formattedNumber() {
-    if (this.gs.glizziesGuzzled > 1000 && this.gs.glizziesGuzzled < 1000000) {
+    if (
+      this.gs.globalGlizziesGuzzled > 1000 &&
+      this.gs.globalGlizziesGuzzled < 1000000
+    ) {
       return `${new Intl.NumberFormat().format(
-        this.gs.glizziesGuzzled / 1000
+        this.gs.globalGlizziesGuzzled / 1000
       )}K`;
     }
-    if (this.gs.glizziesGuzzled > 1000000) {
+    if (this.gs.globalGlizziesGuzzled > 1000000) {
       return `${new Intl.NumberFormat().format(
-        this.gs.glizziesGuzzled / 1000000
+        this.gs.globalGlizziesGuzzled / 1000000
       )}M`;
     }
-    return new Intl.NumberFormat().format(this.gs.glizziesGuzzled);
+    return new Intl.NumberFormat().format(this.gs.globalGlizziesGuzzled);
   }
 }

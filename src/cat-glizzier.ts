@@ -90,6 +90,7 @@ export class CatGlizzier extends FASTElement {
       )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
         Math.random() * 256
       )})`;
+      (star as HTMLDivElement).style.animationDelay = `${Math.random() * 2}s`;
     });
   }
 }

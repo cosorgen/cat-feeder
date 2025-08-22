@@ -4,6 +4,7 @@ import { observable } from '@microsoft/fast-element';
 
 export default class GlizzyState {
   @observable glizziesGuzzled = 0;
+  @observable globalGlizziesGuzzled = 0;
   @observable isDragging = false;
   @observable loading = true;
   supabase?: SupabaseClient;
@@ -37,7 +38,7 @@ export default class GlizzyState {
       if (error) {
         console.error('Error loading counter:', error);
       } else {
-        this.glizziesGuzzled = (data as HotdogCounterRow).count || 0;
+        this.globalGlizziesGuzzled = (data as HotdogCounterRow).count || 0;
       }
 
       this.loading = false;
@@ -48,12 +49,13 @@ export default class GlizzyState {
 
   async incrementGlizzyCount() {
     this.glizziesGuzzled += 1;
+    this.globalGlizziesGuzzled += 1;
 
     if (this.supabase) {
       const { error } = await this.supabase
         .from('hotdog_counter')
         .update({
-          count: this.glizziesGuzzled,
+          count: this.globalGlizziesGuzzled,
           updated_at: new Date().toISOString(),
         })
         .eq('id', 1);
@@ -61,7 +63,7 @@ export default class GlizzyState {
       if (error) {
         console.error('Error updating counter:', error);
         // Save to localStorage as backup
-        localStorage.setItem('hotdogCount', this.glizziesGuzzled.toString());
+        localStorage.setItem('hotdogCount', this.globalGlizziesGuzzled.toString());
       }
     }
   }

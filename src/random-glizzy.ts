@@ -21,6 +21,7 @@ const styles = css`
     position: absolute;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
     transition: transform 0.2s ease, filter 0.2s ease;
+    outline: 1px solid red;
   }
 
   img {
@@ -99,6 +100,7 @@ export class RandomGlizzy extends FASTElement {
     this.dataset.top = this.style.top;
     this.dataset.zIndex = this.style.zIndex;
     this.dataset.translate = this.style.translate;
+    this.dataset.bottom = this.style.bottom;
 
     // add listener for drag & drop
     document.addEventListener('mousemove', this.handleDrag);
@@ -114,6 +116,7 @@ export class RandomGlizzy extends FASTElement {
       this.style.position = 'fixed';
       this.style.left = e.clientX - offsetX + 'px';
       this.style.top = e.clientY - offsetY + 'px';
+      this.style.bottom = 'auto';
       this.style.zIndex = '1000';
       this.style.translate = '0 0';
     }
@@ -130,6 +133,7 @@ export class RandomGlizzy extends FASTElement {
         this.style.position = this.dataset.position || 'absolute';
         this.style.left = this.dataset.left || 'auto';
         this.style.top = this.dataset.top || 'auto';
+        this.style.bottom = this.dataset.bottom || 'auto';
         this.style.zIndex = this.dataset.zIndex || '1';
         this.style.translate = this.dataset.translate || 'none';
       }

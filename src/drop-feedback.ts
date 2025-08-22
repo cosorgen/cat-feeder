@@ -90,7 +90,7 @@ export class DropFeedback extends FASTElement {
       this.style.display = 'block';
       setTimeout(() => {
         this.show = false;
-      }, 1000);
+      }, 3000);
     }
   }
 }
