@@ -37,14 +37,24 @@ const styles = css`
     border: 2px solid #fff;
   }
 
-  #counter-display h2 {
+  h2 {
     margin: 0;
     font-size: 2rem;
   }
-
-  #instructions p {
+  
+  p {
     margin: 0;
     font-size: 1.2rem;
+  }
+
+  @media only screen and (max-width: 480px) {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
   }
 `;
 
