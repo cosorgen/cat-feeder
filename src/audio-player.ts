@@ -60,7 +60,7 @@ const styles = css`
   @media only screen and (max-width: 480px) {
     button {
       top: auto;
-      bottom: 20px;
+      bottom: calc(env(safe-area-inset-bottom) + 20px);
     }
   }
 

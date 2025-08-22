@@ -27,8 +27,8 @@ const styles = css`
   :host {
     display: block;
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 100svw;
+    height: 100svh;
     overflow: hidden;
     cursor: ${(x) => (x.gs.isDragging ? 'grabbing' : 'grab')} !important;
   }
@@ -51,9 +51,15 @@ const styles = css`
     animation: twinkle 1.5s linear infinite;
   }
 
+  @media (prefers-reduced-motion: reduce), only screen and (max-width: 480px) {
+    .star {
+      animation: none;
+    }
+  }
+
   @keyframes twinkle {
     0% {
-      transform: scale(.8) translateY(-10px);
+      transform: scale(0.8) translateY(-10px);
       opacity: 0;
     }
     50% {

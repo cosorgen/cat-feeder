@@ -53,7 +53,7 @@ const styles = css`
 
 @customElement({ name: 'drop-feedback', template, styles })
 export class DropFeedback extends FASTElement {
-  @attr({ mode: 'boolean' }) show = false;
+  @attr({ mode: 'boolean' }) show = true;
   @inject(GlizzyState) gs!: GlizzyState;
   responses: string[] = [
     'This… is not chicken. 😾',

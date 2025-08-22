@@ -131,7 +131,6 @@ export class RandomGlizzy extends FASTElement {
     let clientY: number;
 
     if (e instanceof TouchEvent) {
-      e.preventDefault();
       clientX = e.touches[0].clientX;
       clientY = e.touches[0].clientY;
     } else {
@@ -155,7 +154,7 @@ export class RandomGlizzy extends FASTElement {
     }
   };
 
-  handleMouseUp = (): void => {
+  handleMouseUp = (e: MouseEvent | TouchEvent): void => {
     if (this.dragging) {
       const dropSuccess = this.gs.glizziesGuzzled > this._glizziesGuzzled;
 

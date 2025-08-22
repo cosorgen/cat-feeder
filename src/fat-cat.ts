@@ -146,7 +146,6 @@ export class FatCat extends FASTElement {
     let clientY: number;
 
     if (e instanceof TouchEvent) {
-      e.preventDefault();
       clientX = e.touches[0].clientX;
       clientY = e.touches[0].clientY;
     } else {
@@ -160,8 +159,10 @@ export class FatCat extends FASTElement {
   };
 
   handleMouseUp = (): void => {
-    if (this.isOverHead) {
+    if (this.isOverHead && this.gs.isDragging) {
       this.gs.incrementGlizzyCount();
+      this.isOverHead = false;
+      this.direction = 'left';
     }
   };
 
