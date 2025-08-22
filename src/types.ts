@@ -40,3 +40,11 @@ export interface DropZone {
   top: number;
   bottom: number;
 }
+
+// Extend window to include gameState
+declare global {
+  interface Window {
+    dragging?: boolean;
+    draggedElement?: HTMLElement;
+  }
+}

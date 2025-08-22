@@ -95,6 +95,9 @@ export class FatCat extends FASTElement {
     super.connectedCallback();
     this.setElements();
     this.addEventListeners();
+    this.gs.catMouth = this.shadowRoot?.querySelector(
+      '#cat-mouth'
+    ) as HTMLElement;
   }
 
   setElements() {

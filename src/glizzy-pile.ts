@@ -1,4 +1,12 @@
-import { customElement, html, css, FASTElement } from '@microsoft/fast-element';
+import {
+  customElement,
+  html,
+  css,
+  FASTElement,
+  observable,
+} from '@microsoft/fast-element';
+import './random-glizzy.js';
+import { RandomGlizzy } from './random-glizzy.js';
 
 const template = html``;
 
@@ -6,45 +14,53 @@ const styles = css`
   :host {
     display: block;
     position: absolute;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
+    bottom: -15vh;
+    left: -5vh;
+    right: 25vw;
+    height: 156px;
   }
 
-  .hotdog {
-    cursor: grab;
-    width: 240px;
-    transition: transform 0.2s ease, filter 0.2s ease;
-  }
-
-  .hotdog.dragging {
-    cursor: grabbing;
-    transform: scale(1.2);
-    pointer-events: none;
-    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.8));
-  }
-
-  .hotdog.eaten {
-    animation: eatAnimation 0.5s ease-out forwards;
-  }
-
-  @keyframes eatAnimation {
-    0% {
-      transform: scale(1);
-      opacity: 1;
-    }
-
-    50% {
-      transform: scale(0.5) rotate(180deg);
-      opacity: 0.8;
-    }
-
-    100% {
-      transform: scale(0) rotate(360deg);
-      opacity: 0;
-    }
+  random-glizzy {
+    position: absolute;
+    bottom: 0;
+    left: 0;
   }
 `;
 
 @customElement({ name: 'glizzy-pile', template, styles })
-export class GlizzyPile extends FASTElement {}
+export class GlizzyPile extends FASTElement {
+  @observable glizzies: Array<RandomGlizzy> = [];
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.generateGlizPile();
+  }
+
+  generateGlizPile(): void {
+    this.glizzies = Array.from({ length: 100 }, () => {
+      const gliz = new RandomGlizzy();
+      const width = Math.max(Math.random() * 256, 152);
+      gliz.style.width = `${width}px`;
+      gliz.style.rotate = `${Math.random() * 45}deg`;
+
+      const x = `calc(${Math.random() * 100}% - ${width}px)`;
+      const y = `${Math.random() * this.getBoundingClientRect().height}px`;
+      gliz.style.left = x;
+      gliz.style.bottom = y;
+      this.shadowRoot?.appendChild(gliz);
+      return gliz;
+    });
+
+    // Sort glizzies by their size (biggest in the front)
+    this.glizzies.sort((a, b) => {
+      const aRect = a.getBoundingClientRect();
+      const bRect = b.getBoundingClientRect();
+      return bRect.width - aRect.width || bRect.height - aRect.height;
+    });
+
+    this.glizzies.forEach((gliz, index) => {
+      gliz.style.zIndex = `${this.glizzies.length - index}`;
+      gliz.style.translate = `0 -${index * 2}px`;
+    });
+  }
+}

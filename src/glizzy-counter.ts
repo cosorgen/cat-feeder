@@ -3,7 +3,7 @@ import { inject } from '@microsoft/fast-element/di.js';
 import GlizzyState from './state.js';
 
 const template = html` <div id="counter-display">
-    <h2>Glizzies gluzzled: ${(x) => x.gs.glizziesGluzzled}</h2>
+    <h2>Glizzies guzzled: ${(x) => x.gs.glizziesGuzzled}</h2>
   </div>
   <div id="instructions">
     <p>Drag glizzies to feed the cat! 🚀🐱🌭</p>

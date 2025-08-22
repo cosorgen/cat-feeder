@@ -6,7 +6,7 @@ import {
   attr,
 } from '@microsoft/fast-element';
 
-const template = html``;
+const template = html`Nom nom! 🐱`;
 
 const styles = css`
   :host {
