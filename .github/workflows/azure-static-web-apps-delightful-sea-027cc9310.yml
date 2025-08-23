@@ -31,6 +31,14 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Check vars
+        run: |
+          echo "Has SUPABASE_URL? -> ${VITE_SUPABASE_URL:+yes}"
+          echo "Has SUPABASE_ANON_KEY? -> ${VITE_SUPABASE_ANON_KEY:+yes}"
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
       - name: Build
         run: npm run build
         env:
