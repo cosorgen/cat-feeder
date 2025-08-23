@@ -124,6 +124,9 @@ export class AudioPlayer extends FASTElement {
     this.setupFoley();
 
     Observable.getNotifier(this.gs).subscribe(this, 'glizziesGuzzled');
+
+    document.addEventListener('mousedown', this.handleMouseDown);
+    document.addEventListener('touchstart', this.handleMouseDown);
   }
 
   setupFoley() {
@@ -143,4 +146,11 @@ export class AudioPlayer extends FASTElement {
       this._sfx.play();
     }
   }
+
+  handleMouseDown = () => {
+    this._music.currentTime = 0;
+    this._music.play();
+    document.removeEventListener('mousedown', this.handleMouseDown);
+    document.removeEventListener('touchstart', this.handleMouseDown);
+  };
 }
