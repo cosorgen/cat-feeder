@@ -10,7 +10,9 @@ import GlizzyState from './state.js';
 
 const template = html` <div popover>
   <h4>Feed my owner too! 😺</h4>
-  <a href="https://paypal.me/codysorgenfrey" target="_blank">Send them a hotdog.</a>
+  <a href="https://paypal.me/codysorgenfrey" target="_blank"
+    >Send them a hotdog.</a
+  >
 </div>`;
 
 const styles = css`
@@ -75,7 +77,7 @@ export class OwnerDonate extends FASTElement {
 
   handleChange(sub: any, prop: string) {
     if (prop === 'glizziesGuzzled') {
-      if (this.gs.glizziesGuzzled % 5 === 0) {
+      if (this.gs.glizziesGuzzled === 5) {
         setTimeout(() => {
           this._popover.showPopover();
         }, 3000);
