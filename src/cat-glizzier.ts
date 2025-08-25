@@ -1,4 +1,5 @@
 import {
+  attr,
   css,
   customElement,
   FASTElement,
@@ -53,6 +54,10 @@ const styles = css`
     animation: twinkle 1.5s linear infinite;
   }
 
+  :host([is-mobile]) .star {
+    animation: none;
+  }
+
   @media (prefers-reduced-motion: reduce), only screen and (max-width: 480px) {
     .star {
       animation: none;
@@ -78,6 +83,7 @@ const styles = css`
 @customElement({ name: 'cat-glizzier', template, styles })
 export class CatGlizzier extends FASTElement {
   @inject(GlizzyState) gs!: GlizzyState;
+  @attr({ mode: 'boolean' }) isMobile = false;
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -100,5 +106,10 @@ export class CatGlizzier extends FASTElement {
       )})`;
       (star as HTMLDivElement).style.animationDelay = `${Math.random() * 2}s`;
     });
+
+    this.isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
   }
 }
